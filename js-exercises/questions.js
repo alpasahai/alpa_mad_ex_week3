@@ -28,6 +28,8 @@
  */
 function filterNegativeNumbers(numbers) {
   // Your implementation here
+  const no_negatives = numbers.filter(number => number >= 0);
+  return no_negatives;
 }
 
 /**
@@ -47,6 +49,8 @@ function filterNegativeNumbers(numbers) {
  */
 function doubleDivisibleByThree(numbers) {
   // Your implementation here
+  const doubled = numbers.filter(number => number % 3 === 0).map(number => number * 2);
+  return doubled;
 }
 
 /**
@@ -76,6 +80,8 @@ function doubleDivisibleByThree(numbers) {
  */
 function selectHighPerformingStudents(students) {
   // Your implementation here
+  const selected_students = students.filter(students => students.GPA >=5 && students.hobbies.includes('coding')).map(students => ({name: students.name, email: students.email})).sort((a, b) => a.name.localeCompare(b.name));
+  return selected_students;
 }
 
 /**
@@ -102,8 +108,30 @@ function selectHighPerformingStudents(students) {
  * @param {Object[]} students - An array of student objects.
  * @return {Object} An object containing aggregated student data.
  */
-function aggregateStudentData(students) {
+function aggregateStudentData(students) { //Come back to this one
   // Your implementation here
+  const aggregateData = students.reduce((acc, student) => {
+    acc.studentNum++;
+
+    acc.studentAvgGPA += student.GPA;
+
+    if (student.hobbies.includes('coding')) {
+      acc.codingStudentNum++;
+      acc.codingStudentGPA += student.GPA;
+    }
+
+    return acc;
+  }, {
+    studentNum: 0,
+    studentAvgGPA: 0,
+    codingStudentNum: 0,
+    codingStudentGPA: 0
+  });
+
+  aggregateData.studentAvgGPA = parseFloat((aggregateData.studentAvgGPA / aggregateData.studentNum).toFixed(2));
+  aggregateData.codingStudentGPA = parseFloat((aggregateData.codingStudentGPA / aggregateData.codingStudentNum).toFixed(2));
+
+  return aggregateData;
 }
 
 /**
@@ -127,6 +155,16 @@ function aggregateStudentData(students) {
  */
 function swapForm(input) {
   // Your implementation here
+  if (input.includes(' ')) //This for removing the spaces and capitalizing the first letter of each word except the first one
+  {
+    return input.split(' ')
+      .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)).join('');
+  }
+  //This is if input is a single word, we will convert it to sentence form by adding spaces before capital letters and converting to lower case
+  else {
+    return input.replace(/([A-Z])/g, ' $1').toLowerCase();
+  }
+  return input;
 }
 
 // Export the function for testing with Jest
